@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
+
+body {
+
+}
+
+.map-vis {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.map-vis1 { 
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+}
+
+
+.map-vis1-desc {
+    text-align: center;
+}
+
+.map-vis2-desc {
+    text-align: center;
+}
+.vis1 {
+    
+   margin-left: auto;
+}
+
+
+body {
+    font-family: 'DM Sans', sans-serif;
+}

@@ -1,0 +1,205 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "autosize": {"type": "fit-x", "contains": "padding"},
+  "background": "#fff",
+  "padding": 5,
+  "height": 500,
+  "width": 550,
+  "data": [
+    {
+      "name": "source_1",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/Modified-US-Data%20-%20Sheet2.csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/ne_10m_admin_2_counties_us.topojson",
+      "format": {
+        "type": "topojson",
+        "feature": "ne_10m_admin_2_counties",
+        "parse": {}
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"properties\"] && datum[\"properties\"][\"NAME_ALT\"]",
+          "as": "properties.NAME_ALT"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "'Data is not available in ' + datum.properties.NAME_ALT",
+          "as": "note"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "county",
+          "fields": ["properties.NAME_ALT"],
+          "values": ["candidate", "party", "total_votes"]
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "translate": {"signal": "[width / 2, height / 2]"},
+      "type": "equirectangular",
+      "center": {"signal": "center_to"},
+      "scale": {"signal": "zoom_level"}
+    }
+  ],
+  "signals": [
+    {
+      "name": "width",
+      "init": "isFinite(containerSize()[0]) ? containerSize()[0] : 200",
+      "on": [
+        {
+          "update": "isFinite(containerSize()[0]) ? containerSize()[0] : 200",
+          "events": "window:resize"
+        }
+      ]
+    },
+    {
+      "name": "zoom_level",
+      "value": 3100,
+      "bind": {
+        "input": "range",
+        "min": 1000,
+        "max": 60000,
+        "step": 100,
+        "name": "Zoom: "
+      }
+    },
+    {
+      "name": "center_to",
+      "value": [-81.604, 28.254],
+      "bind": {
+        "input": "select",
+        "options": [
+          [-81.604, 28.254],
+          [-123.8103137, 37.1925946],
+          [-104.5715494, 31.1002666],
+          [-93.7582589, 39.6611772]
+        ],
+        "labels": ["Florida", "California", "Texas", "Illinois"],
+        "name": "State:"
+      }
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "clip": true,
+      "style": ["geoshape"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#ddd"},
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 1},
+          "tooltip": {
+            "signal": "isValid(datum[\"note\"]) ? datum[\"note\"] : \"\"+datum[\"note\"]"
+          },
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"note: \" + (isValid(datum[\"note\"]) ? datum[\"note\"] : \"\"+datum[\"note\"])"
+          }
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "shape",
+      "clip": true,
+      "style": ["geoshape"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#fff"},
+          "strokeWidth": {"value": 0.5},
+          "fill": {"scale": "color", "field": "candidate"},
+          "tooltip": {
+            "signal": "{\"County\": isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"], \"Total Votes\": format(datum[\"total_votes\"], \"\")}"
+          },
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"Candidates: \" + (isValid(datum[\"candidate\"]) ? datum[\"candidate\"] : \"\"+datum[\"candidate\"]) + \"; County: \" + (isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"]) + \"; Total Votes: \" + (format(datum[\"total_votes\"], \"\"))"
+          }
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_1", "field": "candidate", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [
+    {
+      "title": "Candidates",
+      "fill": "color",
+      "encode": {"symbols": {"update": {"stroke": {"value": "#fff"}}}}
+    }
+  ],
+  "config": {
+    "path": {"stroke": "#4572a7"},
+    "shape": {"stroke": "#4572a7"},
+    "symbol": {"fill": "#4572a7", "strokeWidth": 1.5, "size": 50},
+    "range": {
+      "category": [
+        "#D3D3D3",
+        "#DB4437",
+        "#4285F4",
+        "#71598e",
+        "#4598ae",
+        "#d98445",
+        "#94aace",
+        "#d09393",
+        "#b9cc98",
+        "#a99cbc"
+      ]
+    },
+    "axis": {
+      "bandPosition": 0.5,
+      "grid": true,
+      "gridColor": "#000000",
+      "gridOpacity": 1,
+      "gridWidth": 0.5,
+      "labelPadding": 10,
+      "tickSize": 5,
+      "tickWidth": 0.5
+    },
+    "axisBand": {"grid": false, "tickExtra": true},
+    "legend": {
+      "labelBaseline": "middle",
+      "labelFontSize": 11,
+      "symbolSize": 50,
+      "symbolType": "square"
+    },
+    "style": {
+      "arc": {"fill": "#4572a7"},
+      "area": {"fill": "#4572a7"},
+      "line": {"stroke": "#4572a7", "strokeWidth": 2},
+      "rect": {"fill": "#4572a7"}
+    }
+  }
+}

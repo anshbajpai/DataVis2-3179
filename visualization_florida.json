@@ -1,0 +1,113 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "#fff",
+  "padding": {"top": 10, "right": 10, "bottom": 10, "left": 10},
+  "width": 550,
+  "height": 450,
+  "data": [
+    {
+      "name": "source_1",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/president_county_results%20-%20Sheet2%20(1).csv",
+      "format": {"type": "csv", "delimiter": ","}
+    },
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/ne_10m_admin_2_counties.topojson",
+      "format": {
+        "type": "topojson",
+        "feature": "ne_10m_admin_2_counties",
+        "parse": {}
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"properties\"] && datum[\"properties\"][\"NAME_ALT\"]",
+          "as": "properties.NAME_ALT"
+        },
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "county",
+          "fields": ["properties.NAME_ALT"],
+          "values": ["candidate", "party", "total_votes"]
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "data('source_0')"},
+      "type": "equalEarth"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "fill": {"scale": "color", "field": "candidate"},
+          "tooltip": {
+            "signal": "{\"County\": isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"], \"Candidate\": isValid(datum[\"candidate\"]) ? datum[\"candidate\"] : \"\"+datum[\"candidate\"], \"Total Votes\": format(datum[\"total_votes\"], \",\")}"
+          },
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"candidate: \" + (isValid(datum[\"candidate\"]) ? datum[\"candidate\"] : \"\"+datum[\"candidate\"]) + \"; County: \" + (isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"]) + \"; Candidate: \" + (isValid(datum[\"candidate\"]) ? datum[\"candidate\"] : \"\"+datum[\"candidate\"]) + \"; Total Votes: \" + (format(datum[\"total_votes\"], \",\"))"
+          }
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "candidate", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [
+    {
+      "title": "Candidates",
+      "fill": "color",
+      "symbolType": "circle",
+      "encode": {"symbols": {"update": {"stroke": {"value": "white"}}}}
+    }
+  ],
+  "config": {
+    "path": {"stroke": "#3366CC"},
+    "shape": {"stroke": "#3366CC"},
+    "symbol": {"stroke": "#3366CC"},
+    "range": {
+      "category": ["#DB4437", "#4285F4"],
+      "heatmap": ["#c6dafc", "#5e97f6", "#2a56c6"]
+    },
+    "axis": {
+      "gridColor": "#ccc",
+      "tickColor": "#ccc",
+      "domain": false,
+      "grid": true
+    },
+    "style": {
+      "guide-label": {"font": "Arial, sans-serif", "fontSize": 12},
+      "guide-title": {"font": "Arial, sans-serif", "fontSize": 12},
+      "group-title": {
+        "font": "Arial, sans-serif",
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "dy": -3
+      },
+      "arc": {"fill": "#3366CC"},
+      "area": {"fill": "#3366CC"},
+      "rect": {"fill": "#3366CC"},
+      "circle": {"fill": "#3366CC"},
+      "group-subtitle": {"dy": -3}
+    }
+  }
+}
