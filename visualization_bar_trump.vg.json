@@ -1,0 +1,153 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "#28282B",
+  "padding": 5,
+  "width": 520,
+  "height": 20,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/seats_won%20-%20Sheet1.csv",
+      "format": {"type": "csv", "delimiter": ","},
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "seats",
+          "sort": {"field": ["candidates"], "order": ["ascending"]},
+          "as": ["seats_start", "seats_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"seats\"]) && isFinite(+datum[\"seats\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "group",
+      "from": {
+        "facet": {
+          "data": "source_0",
+          "name": "stack_group_main",
+          "groupby": [],
+          "aggregate": {
+            "fields": ["seats_start", "seats_start", "seats_end", "seats_end"],
+            "ops": ["min", "max", "min", "max"]
+          }
+        }
+      },
+      "encode": {
+        "update": {
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"value": 30},
+          "cornerRadius": {"value": 4},
+          "x": {
+            "signal": "min(scale('x',datum[\"min_seats_start\"]),scale('x',datum[\"max_seats_start\"]),scale('x',datum[\"min_seats_end\"]),scale('x',datum[\"max_seats_end\"]))"
+          },
+          "x2": {
+            "signal": "max(scale('x',datum[\"min_seats_start\"]),scale('x',datum[\"max_seats_start\"]),scale('x',datum[\"min_seats_end\"]),scale('x',datum[\"max_seats_end\"]))"
+          },
+          "clip": {"value": true}
+        }
+      },
+      "marks": [
+        {
+          "type": "group",
+          "encode": {
+            "update": {
+              "x": {"field": {"group": "x"}, "mult": -1},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "marks",
+              "type": "rect",
+              "style": ["bar"],
+              "from": {"data": "stack_group_main"},
+              "encode": {
+                "update": {
+                  "fill": {"scale": "color", "field": "candidates"},
+                  "tooltip": {
+                    "signal": "{\"Candidate\": isValid(datum[\"candidates\"]) ? datum[\"candidates\"] : \"\"+datum[\"candidates\"], \"Seats Won\": isValid(datum[\"seats\"]) ? datum[\"seats\"] : \"\"+datum[\"seats\"]}"
+                  },
+                  "ariaRoleDescription": {"value": "bar"},
+                  "description": {
+                    "signal": "\"seats: \" + (format(datum[\"seats\"], \"\")) + \"; Candidates: \" + (isValid(datum[\"candidates\"]) ? datum[\"candidates\"] : \"\"+datum[\"candidates\"]) + \"; Candidate: \" + (isValid(datum[\"candidates\"]) ? datum[\"candidates\"] : \"\"+datum[\"candidates\"]) + \"; Seats Won: \" + (isValid(datum[\"seats\"]) ? datum[\"seats\"] : \"\"+datum[\"seats\"])"
+                  },
+                  "x": {"scale": "x", "field": "seats_end"},
+                  "x2": {"scale": "x", "field": "seats_start"},
+                  "height": {"field": {"group": "height"}}
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "fields": ["seats_start", "seats_end"]},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": ["Joe Biden", "Donald Trump"],
+      "range": ["#4285F4", "#DB4437"]
+    }
+  ],
+  "legends": [],
+  "config": {
+    "path": {"stroke": "#4572a7"},
+    "shape": {"stroke": "#4572a7"},
+    "symbol": {"fill": "#4572a7", "strokeWidth": 1.5, "size": 50},
+    "range": {
+      "category": [
+        "#D3D3D3",
+        "#DB4437",
+        "#4285F4",
+        "#71598e",
+        "#4598ae",
+        "#d98445",
+        "#94aace",
+        "#d09393",
+        "#b9cc98",
+        "#a99cbc"
+      ]
+    },
+    "axis": {
+      "bandPosition": 0.5,
+      "grid": true,
+      "gridColor": "#000000",
+      "gridOpacity": 1,
+      "gridWidth": 0.5,
+      "labelPadding": 10,
+      "tickSize": 5,
+      "tickWidth": 0.5
+    },
+    "axisBand": {"grid": false, "tickExtra": true},
+    "legend": {
+      "labelBaseline": "middle",
+      "labelFontSize": 11,
+      "symbolSize": 50,
+      "symbolType": "square"
+    },
+    "style": {
+      "cell": {"stroke": null},
+      "arc": {"fill": "#4572a7"},
+      "area": {"fill": "#4572a7"},
+      "line": {"stroke": "#4572a7", "strokeWidth": 2},
+      "rect": {"fill": "#4572a7"}
+    }
+  }
+}

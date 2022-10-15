@@ -9,50 +9,107 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+      <!-- Import pure.css -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@2.1.0/build/pure-min.css"
+       integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" 
+       crossorigin="anonymous">
+
     <script src="vega_lite_vis.js"></script>
     <title>Data Visualisation 2 - Critique</title>
 </head>
 <body>
     <!-- Heading Viz -->
+<div class="content">
     <div class = "map-vis">
 
-        <div class = "map-vis1">
+        <!-- Heading For Viz -->
         <h1>US Elections 2020</h1>
+        <h3>By Ansh Bajpai</h3>
 
-        <p class = "map-vis1-desc">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-             Proin sit amet blandit lacus, vitae dictum enim. Etiam urna neque, 
-             gravida non leo a, mollis pulvinar odio. Praesent lobortis suscipit 
-             leo ac pulvinar. Etiam sit amet ultricies nunc. Fusce sed auctor diam,
-              non laoreet arcu. Maecenas et hendrerit dui. Etiam venenatis laoreet
-              euismod. Curabitur ac enim pellentesque, laoreet tortor viverra, 
-               fermentum mi. Fusce ultrices, sem finibus bibendum mattis, dui turpis 
-               varius nisi, ac vulputate enim mauris rutrum nisl. Vivamus sem nunc, 
-        </p>
-
-                <!-- Map Viz 1 -->
-        <div id = "vg-1"  class = "vis1"></div>
+        <div class="joe-trump">
+        <div class = "pure-g">
+            <div class = "pure-u-1-5">
+                <div class = "left-number">
+                <img src="./images/donald-trump.png" width = 60 height = 60/>
+            </br>
+                <span class = "total-votes left-num">232</span>
+            </div>
+            </div>
+            <div class = "pure-u-3-5">
+                <div id = "vg-5"  class = "vis1"></div>
+            </div>
+            <div class = "pure-u-1-5 right-number">
+                <div class = "right-number">
+                <img src="./images/joe-biden.png" width = 60 height =60/>
+            </br>
+                <span class = "total-votes right-num">306</span>
+            </div>
+            </div>
+        </div>
     </div>
 
 
-    <div class="map-vis2">
+        <!-- USA MAP  -->
+        <div class="pure-g">
+            <div class="pure-u-2-5">
+                <div class="description description-left">
+                    <div class="usa-results-left">
+                    <h2>2020 Results</h2>
+                    <p> The 2020 United States presidential election was the 59th quadrennial presidential election,
+                         held on Tuesday, November 3, 2020. The Democratic ticket of former vice president 
+                         <span class="joe"><b>Joe Biden</b></span> 
+                         and the junior U.S. senator from California Kamala Harris defeated the incumbent Republican president
+                        <span class = "donald"><b>Donald Trump</b></span> and incumbent vice president Mike Pence. The election took place against the backdrop 
+                        of the global COVID-19 pandemic and related recession. </p>
+                    </div>
+                  </div>
+            </div>
+            <div class="pure-u-3-5">
+                <div id = "vg-1"  class = "vis1"></div>
+            </div>
+        </div>
+
 
         <h2>US Top 10 States - Voting Metrics</h2>
-
-        <div class = "map-vis2-desc">
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-             Proin sit amet blandit lacus, vitae dictum enim. Etiam urna neque, 
-             gravida non leo a, mollis pulvinar odio. Praesent lobortis suscipit 
-             leo ac pulvinar. Etiam sit amet ultricies nunc. Fusce sed auctor diam,
-              non laoreet arcu. Maecenas et hendrerit dui. Etiam venenatis laoreet
-              </p>
+        <div class="pure-g">
+            <div class="pure-u-3-5">
+                <div id = "vg-2"  class = "vis2"></div>
             </div>
+            <div class="pure-u-2-5">
+                <div class="description description-left">
+                    <div class="usa-bar-states-left">
+                    <p> In the United States, a state is a constituent political entity, of which there are 50. 
+                        Bound together in a political union, each state holds governmental jurisdiction over a 
+                        separate and defined geographic territory where it shares its sovereignty with the 
+                        federal government. Due to this shared sovereignty, Americans are citizens both of 
+                        the federal republic and of the state in which they reside.</p>
+                    </div>
+                  </div>
+            </div>
+        </div>
 
-            <div id = "vg-2"  class = "vis2"></div>
-    </div>
 
-    <div class="map-vis3">
+        <h2 class = "county-section">US County Breakdown - Interactive</h2>
+        <div class="pure-g">
+            <div class="pure-u-2-5">
+                <div class="description description-left">
+                    <div class="usa-bar-states-left">
+                    <p> In the United States, a state is a constituent political entity, of which there are 50. 
+                        Bound together in a political union, each state holds governmental jurisdiction over a 
+                        separate and defined geographic territory where it shares its sovereignty with the 
+                        federal government. Due to this shared sovereignty, Americans are citizens both of 
+                        the federal republic and of the state in which they reside.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="pure-u-3-5">
+                <div id = "vg-3"  class = "vis3"></div>
+            </div>
+        </div>
+    
+
+    <!-- <div class="map-vis3">
 
         <h2>US County Breakdown - Interactive</h2>
         <div class = "map-vis3-desc">
@@ -68,13 +125,14 @@
             </div>
 
             <div id = "vg-3"  class = "vis3"></div>
-    <div>
+    <div> -->
 
     
-    <div class="map-vis4">
+    <!-- <div class="map-vis4">
 
         <h2>Florida County Breakdown -  Infocus</h2>
             <div class = "map-vis4-desc">
+                
                 <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                  Proin sit amet blandit lacus, vitae dictum enim. Etiam urna neque, 
@@ -86,7 +144,11 @@
                   </p>
                 </div>
     
-                <div id = "vg-4"  class = "vis4"></div>
-        <div>    
+            <div id = "vg-4"  class = "vis4"></div>
+        <div>    -->
+
+
+        <div class="ansh">Visualisation made by Ansh Bajpai</div>    
+</div> 
 </body>
 </html>
