@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": {"type": "fit-x", "contains": "padding"},
-  "background": "#fff",
+  "background": "#28282B",
   "padding": 5,
   "height": 500,
   "width": 550,
@@ -154,11 +154,6 @@
     }
   ],
   "legends": [
-    {
-      "title": "Candidates",
-      "fill": "color",
-      "encode": {"symbols": {"update": {"stroke": {"value": "#fff"}}}}
-    }
   ],
   "config": {
     "path": {"stroke": "#4572a7"},

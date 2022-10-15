@@ -23,8 +23,8 @@ vegaEmbed("#vg-3", vg_3, opt).then(function (result) {
     //(https://vega.github.io/vega/docs/api/view/) as result.view
 }).catch(console.error);
 
-var vg_4 = "visualization_florida.json";
-vegaEmbed("#vg-4", vg_4).then(function (result) {
+var vg_4 = "visualization_interactive.vg.json";
+vegaEmbed("#vg-4", vg_4, opt).then(function (result) {
     // Access the Vega view instance
     //(https://vega.github.io/vega/docs/api/view/) as result.view
 }).catch(console.error);
