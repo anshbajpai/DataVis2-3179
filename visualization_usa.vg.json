@@ -52,7 +52,7 @@
           "strokeWidth": {"value": 0.5},
           "fill": {"scale": "color", "field": "candidate"},
           "tooltip": {
-            "signal": "{\"State\": isValid(datum[\"properties.name_en\"]) ? datum[\"properties.name_en\"] : \"\"+datum[\"properties.name_en\"], \"Candidate\": isValid(datum[\"candidate\"]) ? datum[\"candidate\"] : \"\"+datum[\"candidate\"]}"
+            "signal": "{\"State\": isValid(datum[\"properties.name_en\"]) ? datum[\"properties.name_en\"] : \"\"+datum[\"properties.name_en\"], \"Candidate Won\": isValid(datum[\"candidate\"]) ? datum[\"candidate\"] : \"\"+datum[\"candidate\"]}"
           },
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
