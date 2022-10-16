@@ -26,10 +26,16 @@ p {
 
 .left-num {
     padding-right: 9px;
+    position: absolute;
+    top: 5px;
+    left: 200px;
 }
 
 .right-num {
     padding-left: 7px;
+    position: absolute;
+    top: 5px;
+    right: 210px;
 }
 
 .left-number {
@@ -60,6 +66,7 @@ h3 {
 
 .joe-trump{
     text-align: center;
+    position: relative;
 }
 
 
