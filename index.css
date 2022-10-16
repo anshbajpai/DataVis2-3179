@@ -38,6 +38,10 @@ p {
     right: 210px;
 }
 
+.center-me {
+    text-align: center;
+}
+
 .left-number {
    /* padding-right: 20px;  */
    text-align: right;
