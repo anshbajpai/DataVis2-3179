@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "US State - Voting Analysis",
+  "description": "The PM2.5 value of Beijing observed 15 days, highlighting the days when PM2.5 level is hazardous to human health. Data source https://chartaccent.github.io/chartaccent.html",
   "background": "#28282B",
   "padding": 5,
   "width": 400,
@@ -10,8 +10,35 @@
     {
       "name": "source_0",
       "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/2004-2020%20Elections%20Data%20-%20Sheet2.csv",
-      "format": {"type": "csv", "delimiter": ","},
+      "format": {
+        "type": "csv",
+        "parse": {"totalvotes": "number"},
+        "delimiter": ","
+      }
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [{"type": "filter", "expr": "datum.year == Year_Selection"}]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "datum.state == 'ILLINOIS'"},
+        {"type": "filter", "expr": "datum.year == Year_Selection"},
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["max"],
+          "fields": ["totalvotes"],
+          "as": ["max_totalvotes"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"max_totalvotes\"]) && isFinite(+datum[\"max_totalvotes\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -27,16 +54,16 @@
   ],
   "marks": [
     {
-      "name": "marks",
+      "name": "layer_0_layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"state\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#DB4437"},
+          "stroke": {"value": "#4572a7"},
           "tooltip": {
-            "signal": "{\"Total Votes\": format(datum[\"totalvotes\"], \",\")}"
+            "signal": "{\"totalvotes\": format(datum[\"totalvotes\"], \",\")}"
           },
           "description": {
             "signal": "\"Total Votes: \" + (format(datum[\"totalvotes\"], \"\")) + \"; State: \" + (isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"]) + \"; totalvotes: \" + (format(datum[\"totalvotes\"], \",\"))"
@@ -49,13 +76,80 @@
           }
         }
       }
+    },
+    {
+      "name": "layer_0_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"state\"]"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#e45755"},
+          "tooltip": {
+            "signal": "{\"Total Votes\": format(datum[\"totalvotes\"], \",\")}"
+          },
+          "description": {
+            "signal": "\"Total Votes: \" + (format(datum[\"totalvotes\"], \"\")) + \"; state: \" + (isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"])"
+          },
+          "x": {"scale": "x", "field": "totalvotes"},
+          "y": {"scale": "y", "field": "state"},
+          "strokeWidth": {"value": 2},
+          "defined": {
+            "signal": "isValid(datum[\"totalvotes\"]) && isFinite(+datum[\"totalvotes\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "description": {
+            "signal": "\"Max of totalvotes: \" + (format(datum[\"max_totalvotes\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "max_totalvotes"},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "align": {"value": "right"},
+          "baseline": {"value": "bottom"},
+          "text": {"value": "Illinois"},
+          "dx": {"value": -2},
+          "dy": {"value": -2},
+          "fill": {"value": "white"},
+          "description": {
+            "signal": "\"Max of totalvotes: \" + (format(datum[\"max_totalvotes\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "max_totalvotes"},
+          "y": {"signal": "height", "mult": 0.5}
+        }
+      }
     }
   ],
   "scales": [
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "totalvotes"},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "totalvotes"},
+          {"data": "data_1", "field": "max_totalvotes"}
+        ]
+      },
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -63,7 +157,7 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "source_0", "field": "state", "sort": true},
+      "domain": {"data": "data_0", "field": "state", "sort": true},
       "range": [0, {"signal": "height"}],
       "padding": 0.5
     }
@@ -126,9 +220,9 @@
     "symbol": {"fill": "#4572a7", "strokeWidth": 1.5, "size": 50},
     "range": {
       "category": [
-        "#D3D3D3",
-        "#DB4437",
-        "#4285F4",
+        "#4572a7",
+        "#aa4643",
+        "#8aa453",
         "#71598e",
         "#4598ae",
         "#d98445",
@@ -156,9 +250,9 @@
       "symbolType": "square"
     },
     "style": {
-      "arc": {"fill": "#4285F4"},
-      "area": {"fill": "#4285F4"},
-      "line": {"stroke": "#4285F4", "strokeWidth": 2},
+      "arc": {"fill": "#4572a7"},
+      "area": {"fill": "#4572a7"},
+      "line": {"stroke": "#4572a7", "strokeWidth": 2},
       "rect": {"fill": "#4572a7"}
     }
   }

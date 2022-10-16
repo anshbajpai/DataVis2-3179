@@ -122,6 +122,27 @@ h3{
     padding-bottom: 20px;
 }
 
+.center-text {
+    /* background-color: lightgray;
+    color: #28282B; */
+    text-align:center;
+}
+
+.annotation-1 {
+    position: relative;
+}
+
+.first-txt {
+    position: absolute;
+    top: 205px;
+    left: -10px;
+    width: 120px
+}
+
+.usa-bar-states-right {
+    padding-top: 45px;
+}
+
 body {
     font-family: 'DM Sans', sans-serif;
     color: white;

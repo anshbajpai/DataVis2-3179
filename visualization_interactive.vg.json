@@ -2,13 +2,13 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": {"type": "fit-x", "contains": "padding"},
   "background": "#28282B",
-  "padding": 5,
+  "padding": 15,
+  "width": 400,
   "height": 500,
-  "width": 550,
   "data": [
     {
       "name": "source_1",
-      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/Modified-US-Data%20-%20Sheet2.csv",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/Modified-US-Data-New%20-%20Sheet4%20(1).csv",
       "format": {"type": "csv", "delimiter": ","}
     },
     {
@@ -47,7 +47,7 @@
           "from": "source_1",
           "key": "county",
           "fields": ["properties.NAME_ALT"],
-          "values": ["candidate", "party", "total_votes"]
+          "values": ["candidate", "party", "total_votes", "state"]
         }
       ]
     }
@@ -95,7 +95,7 @@
           [-93.7582589, 39.6611772]
         ],
         "labels": ["Florida", "California", "Texas", "Illinois"],
-        "name": "State:"
+        "name": "Select State "
       }
     }
   ],
@@ -134,7 +134,7 @@
           "strokeWidth": {"value": 0.5},
           "fill": {"scale": "color", "field": "candidate"},
           "tooltip": {
-            "signal": "{\"County\": isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"], \"Total Votes\": format(datum[\"total_votes\"], \"\")}"
+            "signal": "{\"County\": isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"], \"State\": isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"] , \"Total Votes\": format(datum[\"total_votes\"], \".2e\")}"
           },
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
@@ -154,6 +154,7 @@
     }
   ],
   "legends": [
+    {"title": "Candidates", "values": ["Joe Biden", "Donald Trump"], "fill": "color", "labelColor": "white", "titleColor": "white"}
   ],
   "config": {
     "path": {"stroke": "#4572a7"},
