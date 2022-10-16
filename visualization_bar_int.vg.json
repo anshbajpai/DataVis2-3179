@@ -1,29 +1,32 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "US State - County Analysis",
+  "description": "Bar chart with text labels. Set domain to make the frame cover the labels.",
   "background": "#28282B",
   "padding": 5,
-  "width": 400,
+  "width": 410,
   "style": "cell",
   "data": [
     {
       "name": "source_0",
       "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/US%20Election%20County%20Data%20-%20Sheet2.csv",
-      "format": {"type": "csv", "delimiter": ","},
+      "format": {
+        "type": "csv",
+        "parse": {"totalvotes": "number"},
+        "delimiter": ","
+      },
       "transform": [
         {"type": "filter", "expr": "datum.year == Year_Selection"},
         {"type": "filter", "expr": "datum.state == State_Selection"},
         {
-          "type": "stack",
-          "groupby": ["county_name"],
-          "field": "totalvotes",
-          "sort": {"field": [], "order": []},
-          "as": ["totalvotes_start", "totalvotes_end"],
-          "offset": "zero"
+          "type": "aggregate",
+          "groupby": ["county_name", "totalvotes"],
+          "ops": ["max"],
+          "fields": ["totalvotes"],
+          "as": ["max_totalvotes"]
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"totalvotes\"]) && isFinite(+datum[\"totalvotes\"])"
+          "expr": "isValid(datum[\"max_totalvotes\"]) && isFinite(+datum[\"max_totalvotes\"])"
         }
       ]
     }
@@ -49,27 +52,54 @@
       "bind": {
         "input": "select",
         "options": ["FLORIDA", "CALIFORNIA", "ILLINOIS"],
+        "labels": ["Florida", "California", "Illinois"],
         "name": "Select State "
       }
     }
   ],
   "marks": [
     {
-      "name": "marks",
+      "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4285F4"},
+          "tooltip": {
+            "signal": "{\"Total Votes\": format(datum[\"totalvotes\"], \",\")}"
+          },
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Total Votes: \" + (format(datum[\"totalvotes\"], \"\")) + \"; County Name: \" + (isValid(datum[\"county_name\"]) ? datum[\"county_name\"] : \"\"+datum[\"county_name\"])"
+            "signal": "\"Total Votes: \" + (format(datum[\"max_totalvotes\"], \"\")) + \"; County Name: \" + (isValid(datum[\"county_name\"]) ? datum[\"county_name\"] : \"\"+datum[\"county_name\"])"
           },
-          "x": {"scale": "x", "field": "totalvotes_end"},
-          "x2": {"scale": "x", "field": "totalvotes_start"},
+          "x": {"scale": "x", "field": "max_totalvotes"},
+          "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "county_name"},
           "height": {"scale": "y", "band": 1}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "align": {"value": "left"},
+          "baseline": {"value": "middle"},
+          "dx": {"value": 4},
+          "fill": {"value": "white"},
+          "tooltip": {
+            "signal": "{\"Total Votes\": format(datum[\"totalvotes\"], \",\")}"
+          },
+          "description": {
+            "signal": "\"Total Votes: \" + (format(datum[\"max_totalvotes\"], \"\")) + \"; County Name: \" + (isValid(datum[\"county_name\"]) ? datum[\"county_name\"] : \"\"+datum[\"county_name\"]) + \"; totalvotes: \" + (format(datum[\"totalvotes\"], \",.2s\"))"
+          },
+          "x": {"scale": "x", "field": "max_totalvotes"},
+          "y": {"scale": "y", "field": "county_name", "band": 0.5},
+          "text": {"signal": "format(datum[\"totalvotes\"], \",.2s\")"}
         }
       }
     }
@@ -78,10 +108,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "data": "source_0",
-        "fields": ["totalvotes_start", "totalvotes_end"]
-      },
+      "domain": {"data": "source_0", "field": "max_totalvotes"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -98,8 +125,8 @@
   "axes": [
     {
       "scale": "x",
-      "gridColor": "white",
       "orient": "bottom",
+      "gridColor": "white",
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -115,10 +142,9 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "Total Votes",
+      "title": "County Name",
       "labelColor": "white",
       "titleColor": "white",
-      "gridColor": "white",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -131,7 +157,6 @@
       "title": "County Name",
       "labelColor": "white",
       "titleColor": "white",
-      "gridColor": "white",
       "tickExtra": true,
       "zindex": 0
     }
@@ -172,9 +197,9 @@
       "symbolType": "square"
     },
     "style": {
-      "arc": {"fill": "#DB4437"},
-      "area": {"fill": "#DB4437"},
-      "line": {"stroke": "#DB4437", "strokeWidth": 2},
+      "arc": {"fill": "#4572a7"},
+      "area": {"fill": "#4572a7"},
+      "line": {"stroke": "#4572a7", "strokeWidth": 2},
       "rect": {"fill": "#4572a7"},
       "text": {"fill": "#fffff"}
     }

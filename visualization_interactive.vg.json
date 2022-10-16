@@ -134,7 +134,7 @@
           "strokeWidth": {"value": 0.5},
           "fill": {"scale": "color", "field": "candidate"},
           "tooltip": {
-            "signal": "{\"County\": isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"], \"State\": isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"] , \"Total Votes\": format(datum[\"total_votes\"], \".2e\")}"
+            "signal": "{\"County\": isValid(datum[\"properties.NAME_ALT\"]) ? datum[\"properties.NAME_ALT\"] : \"\"+datum[\"properties.NAME_ALT\"], \"State\": isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"] , \"Total Votes\": format(datum[\"total_votes\"], \",\")}"
           },
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
