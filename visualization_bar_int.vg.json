@@ -142,7 +142,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "County Name",
+      "title": "Total Votes",
       "labelColor": "white",
       "titleColor": "white",
       "labelFlush": true,

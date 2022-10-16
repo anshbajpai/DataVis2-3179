@@ -98,8 +98,12 @@ h2 {
 }
 
 .usa-bar-states-left {
-    padding-top: 35px;
+    padding-top: 15px;
     font-family: 'DM Sans', sans-serif;
+}
+
+.analysis-title {
+    text-align: center;
 }
 
 .vis1 {
