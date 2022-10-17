@@ -1,0 +1,209 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "US State - Voting Analysis",
+  "background": "#28282B",
+  "padding": 5,
+  "width": 410,
+  "height": 220,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "https://raw.githubusercontent.com/anshbajpai/Week9-Homework/main/2004-2020%20Elections%20Data%20-%20Sheet2.csv",
+      "format": {"type": "csv", "delimiter": ","},
+      "transform": [{"type": "filter", "expr": "datum.year == Year_Selection"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"totalvotes\"]) && isFinite(+datum[\"totalvotes\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "Year_Selection",
+      "value": "2004",
+      "bind": {
+        "input": "select",
+        "options": [2004, 2008, 2012, 2016, 2020],
+        "name": "Select Year "
+      }
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"state\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#DB4437"},
+          "tooltip": {
+            "signal": "{\"Total Votes\": format(datum[\"totalvotes\"], \",\")}"
+          },
+          "description": {
+            "signal": "\"Total Votes: \" + (format(datum[\"totalvotes\"], \"\")) + \"; State: \" + (isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"]) + \"; totalvotes: \" + (format(datum[\"totalvotes\"], \",\"))"
+          },
+          "x": {"scale": "x", "field": "totalvotes"},
+          "y": {"scale": "y", "field": "state"},
+          "strokeWidth": {"value": 2},
+          "defined": {
+            "signal": "isValid(datum[\"totalvotes\"]) && isFinite(+datum[\"totalvotes\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "dx": {"value": 4},
+          "fill": {"value": "white"},
+          "tooltip": {
+            "signal": "{\"Total Votes\": format(datum[\"totalvotes\"], \",\")}"
+          },
+          "description": {
+            "signal": "\"Total Votes: \" + (format(datum[\"totalvotes\"], \"\")) + \"; State: \" + (isValid(datum[\"state\"]) ? datum[\"state\"] : \"\"+datum[\"state\"]) + \"; totalvotes: \" + (format(datum[\"totalvotes\"], \",.2s\"))"
+          },
+          "x": {"scale": "x", "field": "totalvotes"},
+          "y": {"scale": "y", "field": "state"},
+          "text": {"signal": "format(datum[\"totalvotes\"], \",.2s\")"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "totalvotes"},
+          {"data": "data_0", "field": "totalvotes"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "state"},
+          {"data": "data_0", "field": "state"}
+        ],
+        "sort": true
+      },
+      "range": [0, {"signal": "height"}],
+      "padding": 0.5
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridColor": "white",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridColor": "white",
+      "gridScale": "x",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Total Votes",
+      "labelColor": "white",
+      "titleColor": "white",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "State",
+      "labelColor": "white",
+      "titleColor": "white",
+      "zindex": 0
+    }
+  ],
+  "config": {
+    "path": {"stroke": "#4572a7"},
+    "shape": {"stroke": "#4572a7"},
+    "symbol": {"fill": "#4572a7", "strokeWidth": 1.5, "size": 50},
+    "range": {
+      "category": [
+        "#D3D3D3",
+        "#DB4437",
+        "#DB4437",
+        "#71598e",
+        "#4598ae",
+        "#d98445",
+        "#94aace",
+        "#d09393",
+        "#b9cc98",
+        "#a99cbc"
+      ]
+    },
+    "axis": {
+      "bandPosition": 0.5,
+      "grid": true,
+      "gridColor": "#000000",
+      "gridOpacity": 1,
+      "gridWidth": 0.5,
+      "labelPadding": 10,
+      "tickSize": 5,
+      "tickWidth": 0.5
+    },
+    "axisBand": {"grid": false, "tickExtra": true},
+    "legend": {
+      "labelBaseline": "middle",
+      "labelFontSize": 11,
+      "symbolSize": 50,
+      "symbolType": "square"
+    },
+    "style": {
+      "arc": {"fill": "#DB4437"},
+      "area": {"fill": "#DB4437"},
+      "line": {"stroke": "#DB4437", "strokeWidth": 2},
+      "rect": {"fill": "#DB4437"}
+    }
+  }
+}

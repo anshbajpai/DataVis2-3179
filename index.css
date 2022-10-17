@@ -27,14 +27,14 @@ p {
 .left-num {
     padding-right: 9px;
     position: absolute;
-    top: 5px;
+    top: 7px;
     left: 200px;
 }
 
 .right-num {
     padding-left: 7px;
     position: absolute;
-    top: 5px;
+    top: 6px;
     right: 212px;
 }
 
@@ -104,6 +104,13 @@ h2 {
 
 .analysis-title {
     text-align: center;
+}
+
+.footer {
+    text-align: center;
+    padding-top: 15px;
+    font-family: 'DM Sans', sans-serif;
+    padding-bottom: 15px;
 }
 
 .vis1 {
